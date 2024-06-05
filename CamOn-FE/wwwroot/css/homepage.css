@@ -1,0 +1,106 @@
+
+.highlight {
+    font-weight: bold;
+    color: orange;
+}
+.text-box-container {
+    display: flex;
+    align-items: center;
+}
+.text-box {
+    font-size: 1.75rem;
+    border: 2px solid black;
+    padding: 20px;
+    margin: 40px 0;
+}
+
+.sidebar-image {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+    .sidebar-image img {
+        margin-right: -102px;
+    }
+
+.divider {
+    position: relative;
+    margin: 50px 0;
+    text-align: center;
+}
+
+    .divider img {
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .divider .line {
+        position: absolute;
+        top: 50%;
+        background-color: black;
+        height: 2px;
+        z-index: -1;
+    }
+
+        .divider .line.left {
+            left: 10%;
+            width: 35%;
+        }
+
+        .divider .line.right {
+            right: 10%;
+            width: 35%;
+        }
+
+.security-box {
+    background-color: #e6f5ff;
+    border-radius: 30px;
+    padding: 20px;
+    margin: 50px auto;
+}
+
+.white-box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    height: 300px;
+}
+
+    .white-box h3 {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .white-box .btn-book {
+        background-color: orange;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+    }
+
+.orange-box {
+    background-color: orange;
+    padding: 15px;
+    text-align: center;
+    color: white;
+}
+
+.light-orange-box {
+    background-color: rgb(255,238,225);
+    padding-top: 20px;
+    text-align: center;
+}
+
+.small-text {
+    font-size: 1rem;
+}
+
+.bold-text {
+    font-weight: bold;
+    font-size: 2rem;
+}

@@ -1,0 +1,41 @@
+﻿@model List<BusinessObjects.Camera>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+        background-color: rgb(255,207,169);
+    }
+    .custom-card-body {
+        background-color: lightyellow;
+        border: 3px solid black;
+    }
+
+    .big-text-button {
+        font-size: 1.25rem;
+    }
+</style>
+<a asp-area="" asp-controller="Camera" asp-action="AddCamera" class="btn custom-card-body big-text-button m-4" type="button">
+    Add a new camera
+</a>
+<div class="row">
+    @{
+        int i = 1;
+    }
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <a asp-area="" asp-controller="Camera" asp-action="Details" class="text-decoration-none">
+                    <img src="~/webLogo.jpg" class="card-img-top" alt="@item.Name">
+                    <div class="card-body custom-card-body text-center text-dark">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">CAM @i</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        i++;
+    }
+</div>

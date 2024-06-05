@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<h2>Camera View</h2>
+<style>
+    .camButtonContainer{
+        display:flex;
+    }
+
+    .camButton {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(200,200,200);
+        color: black;
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 15px 25px;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 2em;
+        font-weight: bold;
+    }
+        .camButton.active {
+            background-color: orange;
+            color: white;
+        }
+
+    .arrowButtonContainer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .arrowButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        background-color: lightgrey;
+        cursor: pointer;
+        position: relative;
+    }
+
+        .arrowButton::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 40px;
+            border: 2px solid black;
+            border-radius: 50%;
+            position: absolute;
+        }
+</style>
+<div>
+    <video id="video" style="width:80%;height:100%" autoplay>
+        Your browser does not support the video tag.
+    </video>
+</div>
+<div class="camButtonContainer">
+@{
+    for(int i=1;i <= 6;i++)
+    {
+        <div class="camButton" onclick="toggleActive(this)">
+            CAM @i
+        </div>
+    }
+}
+</div>
+<button id="capture">capture</button>
+
+<div class="arrowButtonContainer">
+    <div class="arrowButton">
+        <i class="fas fa-arrow-left"></i>
+    </div>
+    <div class="arrowButton">
+        <i class="fas fa-arrow-right"></i>
+    </div>
+</div>
+<script>
+    function toggleActive(element) {
+        // Remove 'active' class from all camButtons
+        var camButtons = document.querySelectorAll('.camButton');
+        camButtons.forEach(function (btn) {
+            btn.classList.remove('active');
+        });
+
+        // Add 'active' class to clicked camButton
+        element.classList.add('active');
+    }
+    // Add 'active' class to the first camButton initially
+    var firstCamButton = document.querySelector('.camButton');
+    toggleActive(firstCamButton);
+</script>
+<script>
+    var video = document.getElementById('video');
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream){
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+    document.getElementById('capture').addEventListener('click', function () {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var image = canvas.toDataURL('image/png');
+        console.log(image);
+        var data = {
+            name: 'ASPNETCORE',
+            age: 30,
+            imageData: image
+        }
+        fetch('/Camera/UploadImage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log(data);
+            })
+            .catch (function (err) {
+                console.log(err);
+            });
+    });
+    </script>
