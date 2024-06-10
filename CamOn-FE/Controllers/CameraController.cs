@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 using System.Text;
 
 namespace CamOn_FE.Controllers
@@ -29,9 +30,13 @@ namespace CamOn_FE.Controllers
             // Pass the list of items to the view
             return View(items);
         }
-        public IActionResult Details()
+        public async Task<IActionResult> Details(string id)
         {
-            return View();
+            var currentUser = await _userManager.GetUserAsync(User);
+            var items = _context.Cameras.Where(c => c.AccountId == currentUser.Id).ToList();
+            // Pass the list of items to the view
+            ViewBag.UserCameras = items;
+            return View((object)id);
         }
         public IActionResult AddCamera()
         {
@@ -80,6 +85,23 @@ namespace CamOn_FE.Controllers
             }
         }
 
+        public async Task<IActionResult> Stream(string cameraId)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_baseUrl);
+                var requestUrl = $"v1/camera/stream?camera_id={cameraId}";
+                var response = await client.GetAsync(requestUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return new FileStreamResult(stream, "multipart/x-mixed-replace; boundary=frame");
+                }
+
+                return StatusCode((int)response.StatusCode);
+            }
+        }
         public IActionResult UploadImage([FromBody] CaptureRequest request)
         {
             var fileName = $"image_{DateTime.Now.Ticks}.png";

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model string
+
+@{
     ViewData["Title"] = "Index";
 }
 <h2>Camera View</h2>
@@ -55,22 +57,25 @@
             position: absolute;
         }
 </style>
+@*
 <div>
-    <video id="video" style="width:80%;height:100%" autoplay>
-        Your browser does not support the video tag.
-    </video>
-</div>
+    <h2>Camera Details</h2>
+    <img id="cameraStream" src="@Url.Action("Stream", "Camera", new { cameraId = Model.ToString() })" alt="Camera Stream" />
+</div>*@
 <div class="camButtonContainer">
-@{
-    for(int i=1;i <= 6;i++)
-    {
-        <div class="camButton" onclick="toggleActive(this)">
-            CAM @i
-        </div>
+    @{
+        var i = 1;
+        foreach (var camera in ViewBag.UserCameras)
+        {
+            <a asp-area="" asp-controller="Camera" asp-action="Details" asp-route-id="@camera.Id" class="text-decoration-none">
+                <div id="cam-@camera.Id" class="camButton" onclick="toggleActive(this)">
+                    CAM @i
+                </div>
+            </a>
+            i++;
+        }
     }
-}
 </div>
-<button id="capture">capture</button>
 
 <div class="arrowButtonContainer">
     <div class="arrowButton">
@@ -81,54 +86,37 @@
     </div>
 </div>
 <script>
-    function toggleActive(element) {
-        // Remove 'active' class from all camButtons
-        var camButtons = document.querySelectorAll('.camButton');
-        camButtons.forEach(function (btn) {
-            btn.classList.remove('active');
-        });
-
-        // Add 'active' class to clicked camButton
-        element.classList.add('active');
-    }
-    // Add 'active' class to the first camButton initially
-    var firstCamButton = document.querySelector('.camButton');
-    toggleActive(firstCamButton);
-</script>
-<script>
-    var video = document.getElementById('video');
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function (stream){
-            video.srcObject = stream;
-            video.play();
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
-    document.getElementById('capture').addEventListener('click', function () {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        var image = canvas.toDataURL('image/png');
-        console.log(image);
-        var data = {
-            name: 'ASPNETCORE',
-            age: 30,
-            imageData: image
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Function to get the camera ID from the URL
+        function getCameraIdFromUrl() {
+            const url = window.location.href;
+            const parts = url.split('/');
+            return parts[parts.length - 1];
         }
-        fetch('/Camera/UploadImage', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch (function (err) {
-                console.log(err);
+
+        // Function to toggle active class
+        function toggleActive(element) {
+            // Remove 'active' class from all camButtons
+            var camButtons = document.querySelectorAll('.camButton');
+            camButtons.forEach(function (btn) {
+                btn.classList.remove('active');
             });
+
+            // Add 'active' class to clicked camButton
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+
+        // Get camera ID from the URL
+        const cameraId = getCameraIdFromUrl();
+
+        // Find the button with the corresponding ID
+        const camButton = document.getElementById('cam-' + cameraId);
+
+        // Add 'active' class to the found button
+        if (camButton) {
+            toggleActive(camButton);
+        }
     });
-    </script>
+</script>

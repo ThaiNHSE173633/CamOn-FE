@@ -1,6 +1,8 @@
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CamOn_FE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,7 @@ builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 1;
 });
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
