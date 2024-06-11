@@ -91,15 +91,23 @@ namespace CamOn_FE.Controllers
             {
                 client.BaseAddress = new Uri(_baseUrl);
                 var requestUrl = $"v1/camera/stream?camera_id={cameraId}";
-                var response = await client.GetAsync(requestUrl);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    return new FileStreamResult(stream, "multipart/x-mixed-replace; boundary=frame");
-                }
+                    var response = await client.GetAsync("http://127.0.0.1:8000/v1/camera/stream?camera_id=5");
 
-                return StatusCode((int)response.StatusCode);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var stream = await response.Content.ReadAsStreamAsync();
+                        return new FileStreamResult(stream, "multipart/x-mixed-replace; boundary=frame");
+                    }
+
+                    return StatusCode((int)response.StatusCode);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = "An error occurred: " + ex.Message;
+                    return View();
+                }
             }
         }
         public IActionResult UploadImage([FromBody] CaptureRequest request)

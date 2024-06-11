@@ -24,6 +24,7 @@ namespace CamOn_FE.Services
                 EnableSsl = true,
                 UseDefaultCredentials = false,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
+                //Credentials = new NetworkCredential("camon229235@gmail.com", "vphzypfebzfwymdi")
                 Credentials = new NetworkCredential("cookez.mail@gmail.com", "azqhastrbxuvogsp")
             };
 
