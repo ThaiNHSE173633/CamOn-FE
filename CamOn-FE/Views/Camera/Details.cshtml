@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Index";
+    var cameraId = Model.ToString();
+    var streamUrl = $"http://127.0.0.1:8000/v1/camera/stream?camera_id={cameraId}";
 }
 <h2>Camera View</h2>
 <style>
@@ -59,7 +61,13 @@
 </style>
 <div>
     <h2>Camera Details</h2>
-    <img id="cameraStream" src="@Url.Action("Stream", "Camera", new { cameraId = Model.ToString() })" alt="Camera Stream" />
+    @*<img id="cameraStream" src="@Url.Action("Stream", "Camera", new { cameraId = Model.ToString() })" alt="Camera Stream" />
+    http://127.0.0.1:8000/v1/camera/stream?camera_id=6
+
+    <img id="cameraStream" src="http://127.0.0.1:8000/v1/camera/stream?camera_id=7" alt="Camera Stream" />
+    *@
+    <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="@streamUrl" width="719" height="404">
+
 </div>
 <div class="camButtonContainer">
     @{
