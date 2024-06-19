@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CamOn_FE.Services;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
+IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -24,6 +26,27 @@ builder.Services.AddIdentity<Account, IdentityRole>(options => {
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = googleAuthNSection["ClientId"];
+        googleOptions.ClientSecret = googleAuthNSection["ClientSecret"];
+        googleOptions.CallbackPath = "/signin-google";
+        googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+        googleOptions.SaveTokens = true;
+        googleOptions.Events.OnCreatingTicket = ctx =>
+        {
+            List<AuthenticationToken> tokens = ctx.Properties.GetTokens().ToList();
+            tokens.Add(new AuthenticationToken()
+            {
+                Name = "TicketCreated",
+                Value = DateTime.UtcNow.ToString()
+            });
+            ctx.Properties.StoreTokens(tokens);
+            return Task.CompletedTask;
+        };
+    });
 
 builder.Services.Configure<IdentityOptions>(options => {
     // Default Password settings.

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title - Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<style>
+    /* Custom styles for the sidebar */
+    .sidebar {
+        background-color: white;
+        border: 2px solid orange;
+        height: 100vh; /* Full height */
+        padding-top: 20px;
+    }
+
+    .navbar-brand {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 10px;
+        border-bottom: 2px solid orange;
+    }
+
+        .navbar-brand img {
+            width: 80%; /* Adjust this value to make the logo smaller */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+    #sidebar .nav-link {
+        color: #000;
+        padding: 10px 15px;
+    }
+
+        #sidebar .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+</style>
+<body>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/webLogo.jpg" alt="Logo">
+                </a>
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <div class="collapse navbar-collapse" id="sidebar">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">Account</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Cameras" asp-action="Index">Camera</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Packages" asp-action="Index">Package</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

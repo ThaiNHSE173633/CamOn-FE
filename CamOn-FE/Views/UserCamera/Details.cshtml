@@ -61,11 +61,6 @@
 </style>
 <div>
     <h2>Camera Details</h2>
-    @*<img id="cameraStream" src="@Url.Action("Stream", "Camera", new { cameraId = Model.ToString() })" alt="Camera Stream" />
-    http://127.0.0.1:8000/v1/camera/stream?camera_id=6
-
-    <img id="cameraStream" src="http://127.0.0.1:8000/v1/camera/stream?camera_id=7" alt="Camera Stream" />
-    *@
     <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="@streamUrl" width="719" height="404">
 
 </div>
@@ -74,7 +69,7 @@
         var i = 1;
         foreach (var camera in ViewBag.UserCameras)
         {
-            <a asp-area="" asp-controller="Camera" asp-action="Details" asp-route-id="@camera.Id" class="text-decoration-none">
+            <a asp-area="" asp-controller="UserCamera" asp-action="Details" asp-route-id="@camera.Id" class="text-decoration-none">
                 <div id="cam-@camera.Id" class="camButton" onclick="toggleActive(this)">
                     CAM @i
                 </div>

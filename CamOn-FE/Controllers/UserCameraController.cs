@@ -8,14 +8,14 @@ using System.Text;
 
 namespace CamOn_FE.Controllers
 {
-    public class CameraController : Controller
+    public class UserCameraController : Controller
     {
         private readonly string _baseUrl;
         private IWebHostEnvironment _environment;
         private readonly AppDbContext _context;
         private readonly UserManager<Account> _userManager;
 
-        public CameraController(IWebHostEnvironment environment,AppDbContext context,
+        public UserCameraController(IWebHostEnvironment environment,AppDbContext context,
             IConfiguration config, UserManager<Account> userManager)
         {
             _environment = environment;
@@ -69,7 +69,7 @@ namespace CamOn_FE.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("Index", "Camera");
+                        return RedirectToAction("Index", "UserCamera");
                     }
                     else
                     {
