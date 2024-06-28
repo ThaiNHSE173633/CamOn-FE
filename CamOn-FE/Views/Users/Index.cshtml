@@ -1,0 +1,73 @@
+﻿@model IEnumerable<AccountRole>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h1>Users</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Role</th>
+            <th>Confirm Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                <td>
+                    <span id="userRole-@item.Id">@item.RoleName</span>
+                </td>
+                <td>
+                    <select id="roleSelector-@item.Id" class="form-control">
+                        @foreach (var role in ViewBag.Roles)
+                        {
+                            @if (role.Name == item.RoleName)
+                            {
+                                <option value="@role.Name" selected>@role.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@role.Name">@role.Name</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" data-user-id="@item.Id" onclick="updateUserRole(this)">Confirm</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script>
+        function updateUserRole(button) {
+            var userId = $(button).data('user-id');
+            var newRole = $('#roleSelector-' + userId).val();
+
+            $.ajax({
+                url: '/Users/UpdateUserRole', // Replace with your controller action
+                type: 'POST',
+                data: { userId: userId, newRole: newRole },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success('User role updated successfully!');
+                        $('#userRole-' + userId).text(newRole); // Update displayed role on success
+                    } else {
+                        toastr.error('An error occurred while updating the user role.');
+                    }
+                },
+                error: function () {
+                    toastr.error('An error occurred during the request.');
+                }
+            });
+        }
+    </script>
+}

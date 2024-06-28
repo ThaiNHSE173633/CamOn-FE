@@ -47,6 +47,7 @@ namespace CamOn_FE.Controllers
         // GET: Cameras/Create
         public IActionResult Create()
         {
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
             return View();
         }
 

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BusinessObjects.Package>
+
+@{
+    ViewData["Title"] = "Buy Package";
+}
+<style>
+    .card-footer {
+        font-size: 1.25rem;
+        text-align: right;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+</style>
+
+<h1>Buy Packages</h1>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title text-center title-large">@Html.DisplayFor(modelItem => item.Name)</h2>
+                        <p class="card-text">
+                            <strong>Number of Cameras:</strong> @Html.DisplayFor(modelItem => item.CameraValue) <br>
+                            <strong>Duration:</strong> @Html.DisplayFor(modelItem => item.MonthValue) months <br>
+                        </p>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <h6 class="text-success font-weight-bold">
+                                Price: @string.Format("{0:N0}", item.Price) VND
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card mt-4">
+        <div class="card-body text-center">
+            <h5 class="card-title">Payment Instructions</h5>
+            <p class="card-text">
+                Please send the correct amount of money with your username and the package name to this account:
+            </p>
+            <div class="text-center">
+                <img src="~/images/buyPackageIcon.jpg" alt="QR Code Image" class="img-fluid img-thumbnail">
+            </div>
+        </div>
+    </div>
+</div>

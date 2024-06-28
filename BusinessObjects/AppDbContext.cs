@@ -17,7 +17,9 @@ namespace BusinessObjects
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Camera> Cameras { get; set; }
         public DbSet<CaptureImage> CaptureImages { get; set; }
+        public DbSet<UserPackage> UserPackages { get; set; }
         public DbSet<Package> Packages { get; set; }
+        public DbSet<PackageTransaction> Transactions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
