@@ -30,7 +30,7 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="MyPackages">My Packages</a>
             <div class="dropdown-divider"></div>
             <form id="logoutForm" class="px-3 py-1" asp-area="Identity" asp-page="/Account/Logout" method="post">
                 <input type="hidden" name="returnUrl" value="@Url.Action("Index", "Home", new { area = "" })">
