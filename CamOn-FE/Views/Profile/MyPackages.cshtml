@@ -2,10 +2,28 @@
 
 @{
     ViewData["Title"] = "My Packages";
+    var currentPackage = Model.FirstOrDefault();
 }
 
 <h1>Packages</h1>
 
+@if (currentPackage != null)
+{
+    <div class="current-package" style="background-color: white; border: 1px solid black; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+        <h4 style="font-weight: bold;">Your current package</h4>
+        <h1 style="color: orange; font-size: 2.5em;">@currentPackage.Package.Name</h1>
+        <p><strong>Price (VND):</strong> @currentPackage.Package.Price</p>
+        <p><strong>Number of Cameras:</strong> @currentPackage.Package.CameraValue</p>
+        <p><strong>Date of purchase:</strong> @currentPackage.StartDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Expired date:</strong> @currentPackage.EndDate.ToString("dd/MM/yyyy")</p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="BuyPackages" asp-action="Index">
+            <div class="btn btn-warning" style="background-color: orange; color: white;">Change Plan</div>
+        </a>
+    </div>
+}
+
+
+<h2>Package History</h2>
 <table class="table">
     <thead>
         <tr>
@@ -27,24 +45,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Package.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Package.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Package.CameraValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Skip(1))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Package.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Package.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Package.CameraValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate.ToString("dd/MM/yyyy"))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate.ToString("dd/MM/yyyy"))
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

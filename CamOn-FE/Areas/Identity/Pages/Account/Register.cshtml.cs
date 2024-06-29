@@ -139,6 +139,7 @@ namespace CamOn_FE.Areas.Identity.Pages.Account
 
 
                     await _emailSender.SendEmailAsync(Input.Email, subject, body);
+                    await _userManager.AddToRoleAsync(user, "User");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

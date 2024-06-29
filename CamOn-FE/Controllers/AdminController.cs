@@ -43,8 +43,10 @@ namespace CamOn_FE.Controllers
                 return NotFound("Package not found");
             }
             var oldPackage = await _context.UserPackages.OrderByDescending(p => p.EndDate).FirstOrDefaultAsync(p => p.UserId.Equals(userId));
-            oldPackage.EndDate = DateTime.Now;
-
+            if (oldPackage != null)
+            {
+                oldPackage.EndDate = DateTime.Now;
+            }
             var userPackage = new UserPackage
             {
                 UserId = user.Id,
