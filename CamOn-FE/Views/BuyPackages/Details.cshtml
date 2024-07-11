@@ -1,0 +1,50 @@
+﻿@model BusinessObjects.Package
+
+@{
+    var titleString = "Buy Package - " + Model.Name;
+    ViewData["Title"] = titleString;
+    var userEmail = ViewData["userEmail"];
+}
+<style>
+    .card-footer {
+        font-size: 1.25rem;
+        text-align: right;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+</style>
+
+<h1>Buy Package - @Model.Name</h1>
+
+<div class="container">
+    <div class="card mt-4 border-dark rounded-lg" style="max-width: 600px; margin: 0 auto;">
+        <h3 class="text-center mt-3">Package Details</h3>
+        <div class="card-body text-center">
+            <h2 class="card-title title-large">@Html.DisplayFor(modelItem => Model.Name) Package</h2>
+            <p class="card-text">
+                <strong>Number of Cameras:</strong> @Html.DisplayFor(modelItem => Model.CameraValue) <br>
+                <strong>Duration:</strong> @Html.DisplayFor(modelItem => Model.MonthValue) months <br>
+            </p>
+            <div class="card-footer bg-transparent border-top-0">
+                <h6 class="text-success font-weight-bold">
+                    Price: @string.Format("{0:N0}", Model.Price) VND
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-body text-center">
+            <h5 class="card-title">Payment Instructions</h5>
+            <p class="card-text">
+                Please send the correct amount of money with your username and the package name to this account with this content:
+            </p>
+            <div class="bold-text">@userEmail - @Model.Name Package</div>
+            <div class="text-center">
+                <img src="~/images/buyPackageIcon.jpg" alt="QR Code Image" class="img-fluid img-thumbnail">
+            </div>
+        </div>
+    </div>
+</div>
+<a asp-action="Index">Back to Package List</a>

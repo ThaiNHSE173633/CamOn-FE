@@ -33,20 +33,12 @@
                                 Price: @string.Format("{0:N0}", item.Price) VND
                             </h6>
                         </div>
+                        <div class="d-flex justify-content-center">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success text-white" style="font-size: 1.5rem; padding: 1rem 2rem;">Buy</a>
+                        </div>
                     </div>
                 </div>
             </div>
         }
-    </div>
-    <div class="card mt-4">
-        <div class="card-body text-center">
-            <h5 class="card-title">Payment Instructions</h5>
-            <p class="card-text">
-                Please send the correct amount of money with your username and the package name to this account:
-            </p>
-            <div class="text-center">
-                <img src="~/images/buyPackageIcon.jpg" alt="QR Code Image" class="img-fluid img-thumbnail">
-            </div>
-        </div>
     </div>
 </div>
