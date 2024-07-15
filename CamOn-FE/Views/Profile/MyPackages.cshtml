@@ -58,10 +58,10 @@
                     @Html.DisplayFor(modelItem => item.Package.CameraValue)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StartDate.ToString("dd/MM/yyyy"))
+                    @item.StartDate.ToString("dd/MM/yyyy")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EndDate.ToString("dd/MM/yyyy"))
+                    @item.EndDate.ToString("dd/MM/yyyy")
                 </td>
             </tr>
         }

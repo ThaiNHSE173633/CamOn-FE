@@ -80,6 +80,7 @@ namespace CamOn_FE.Controllers
             {
                 return NotFound();
             }
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
             return View(camera);
         }
 

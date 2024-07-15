@@ -1,6 +1,4 @@
-﻿@model BusinessObjects.Camera
-
-@{
+﻿@{
     ViewBag.Title = "Create Camera";
 }
 <style>
@@ -21,6 +19,12 @@
 </style>
 <div class="container-box">
     <h2>Add Camera</h2>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
     <form action="/UserCamera/AddCamera" method="post">
         <div class="form-group">
             <label for="cameraName">Camera Name:</label>
