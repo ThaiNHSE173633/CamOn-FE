@@ -5,31 +5,11 @@
     var cameraId = Model.ToString();
     var streamUrl = $"http://127.0.0.1:8000/v1/camera/stream?camera_id={cameraId}";
 }
-<h2>Camera View</h2>
 <style>
-    .camButtonContainer{
-        display:flex;
+    .camButton.active {
+        background-color: orange;
+        color: white;
     }
-
-    .camButton {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgb(200,200,200);
-        color: black;
-        border: 1px solid black;
-        border-radius: 8px;
-        padding: 15px 25px;
-        margin: 5px;
-        cursor: pointer;
-        font-size: 2em;
-        font-weight: bold;
-    }
-        .camButton.active {
-            background-color: orange;
-            color: white;
-        }
 
     .arrowButtonContainer {
         display: flex;
@@ -49,6 +29,30 @@
         position: relative;
     }
 
+    .camButtonContainer {
+        display: flex;
+        overflow-x: auto; /* Enable horizontal scrolling */
+        padding: 10px; /* Add padding for space around buttons */
+    }
+
+    .camButton {
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        align-items: center; /* Center children horizontally */
+        justify-content: center;
+        background-color: rgb(200, 200, 200);
+        color: black;
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 15px 25px;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 2em;
+        font-weight: bold;
+        width: 150px; /* Adjust width as needed */
+        height: 120px;
+    }
+
         .arrowButton::before {
             content: '';
             display: block;
@@ -58,12 +62,26 @@
             border-radius: 50%;
             position: absolute;
         }
-</style>
-<div>
-    <h2>Camera Details</h2>
-    <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="@streamUrl" width="719" height="404">
 
+    .camButtonTitle {
+        font-size: 24px; /* Big text for "CAM" */
+        font-weight: bold;
+        width: 100%; /* Ensure full width */
+    }
+
+    .camButtonName {
+        font-size: 14px; /* Small text for camera name */
+        margin-top: 10px; /* Space between CAM and name */
+        color: #6c757d; /* Muted text color */
+        width: 100%; /* Ensure full width */
+    }
+</style>
+
+<div>
+    <h2>Camera View</h2>
+    <img style="display: block; -webkit-user-select: none; margin: auto; background-color: hsl(0, 0%, 25%);" src="@streamUrl" width="719" height="404">
 </div>
+
 <div class="camButtonContainer">
     @{
         var i = 1;
@@ -71,7 +89,8 @@
         {
             <a asp-area="" asp-controller="UserCamera" asp-action="Details" asp-route-id="@camera.Id" class="text-decoration-none">
                 <div id="cam-@camera.Id" class="camButton" onclick="toggleActive(this)">
-                    CAM @i
+                    <div class="camButtonTitle">CAM @i</div>
+                    <div class="camButtonName">@camera.Name</div>
                 </div>
             </a>
             i++;
