@@ -10,5 +10,6 @@ namespace BusinessObjects {
         public string? IpAddress { get; set; }
         public string? AccountId { get; set; }
         public ICollection<CaptureImage>? CaptureImages { get; set; }
+        public ICollection<Notification>? Notifications { get; set; }
     }
 }

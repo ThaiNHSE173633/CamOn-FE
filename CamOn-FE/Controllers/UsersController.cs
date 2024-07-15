@@ -1,10 +1,13 @@
 ﻿using BusinessObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CamOn_FE.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly AppDbContext _context;

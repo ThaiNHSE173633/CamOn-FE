@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObjects;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CamOn_FE.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CamerasController : Controller
     {
         private readonly AppDbContext _context;

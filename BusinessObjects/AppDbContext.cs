@@ -20,6 +20,7 @@ namespace BusinessObjects
         public DbSet<UserPackage> UserPackages { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<PackageTransaction> Transactions { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
