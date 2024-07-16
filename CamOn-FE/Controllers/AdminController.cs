@@ -17,7 +17,24 @@ namespace CamOn_FE.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Dashboard()
+        public ActionResult Dashboard()
+        {
+
+            var packagesBoughtPerMonth = _context.UserPackages
+                .GroupBy(up => new { up.StartDate.Year, up.StartDate.Month })
+                .Select(g => new { g.Key.Year, g.Key.Month, Count = g.Count() })
+                .ToList()
+                .ToDictionary(x => $"{x.Year}-{x.Month:D2}", x => x.Count);
+
+            var viewModel = new AdminDashboardViewModel
+            {
+                PackagesBoughtPerMonth = packagesBoughtPerMonth
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> AssignPackages()
         {
             var users = await _context.Users.ToListAsync();
             var packages = await _context.Packages.ToListAsync();
@@ -32,7 +49,7 @@ namespace CamOn_FE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Dashboard(string userId, int packageId)
+        public async Task<IActionResult> AssignPackages(string userId, int packageId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -63,10 +80,9 @@ namespace CamOn_FE.Controllers
 
             TempData["SuccessMessage"] = "Package assigned successfully!";
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("AssignPackages");
         }
         
-        // Method to search users by email
         public async Task<IActionResult> SearchUsers(string email)
         {
             if (string.IsNullOrEmpty(email))
@@ -81,7 +97,6 @@ namespace CamOn_FE.Controllers
             return Json(users);
         }
 
-        // Method to search packages by name
         public async Task<IActionResult> SearchPackages(string name)
         {
             if (string.IsNullOrEmpty(name))

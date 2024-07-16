@@ -1,0 +1,147 @@
+﻿@model AdminAssignPackageViewModel
+@{
+    ViewData["Title"] = "Assign Packages";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Assign Package</h2>
+<style>
+    .list-group-item.active {
+        background-color: #ffef69;
+        color: black;
+    }
+</style>
+
+<div class="row">
+    <div class="col-6">
+    <div class="form-group">
+        <label for="userSearch">Search User by Email</label>
+        <input type="text" id="userSearch" class="form-control" placeholder="Enter user email" onkeyup="searchUsers()" />
+    </div>
+    <div class="form-group">
+        <label>Select User</label>
+        <ul id="userList" class="list-group">
+            @foreach (var user in Model.Users)
+            {
+                <li class="list-group-item" data-user-id="@user.Id">
+                    <button type="button" class="btn btn-primary btn-sm float-right" onclick="selectUser('@user.Id')">Select</button>
+                    @user.Email
+                </li>
+            }
+        </ul>
+    </div>
+    </div>
+    <div class="col-6">
+    <div class="form-group">
+        <label for="packageSearch">Search Package by Name</label>
+        <input type="text" id="packageSearch" class="form-control" placeholder="Enter package name" onkeyup="searchPackages()" />
+    </div>
+    <div class="form-group">
+        <label>Select Package</label>
+        <ul id="packageList" class="list-group">
+            @foreach (var package in Model.Packages)
+            {
+                <li class="list-group-item" data-package-id="@package.Id">
+                    <button type="button" class="btn btn-primary btn-sm select-button" onclick="selectPackage('@package.Id')">Select</button>
+                    @package.Name - @package.MonthValue Months - @package.CameraValue Cameras - @package.Price VND
+                </li>
+            }
+        </ul>
+        </div>
+    </div>
+</div>
+<form asp-action="AssignPackages" method="post" id="assignForm">
+    <input type="hidden" name="userId" id="selectedUserId" />
+    <input type="hidden" name="packageId" id="selectedPackageId" />
+    <div class="form-group">
+        <input type="submit" value="Assign Package" class="btn btn-primary" id="assignButton" disabled />
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function searchUsers() {
+            var email = document.getElementById('userSearch').value;
+            $.ajax({
+                url: '@Url.Action("SearchUsers", "Admin")',
+                data: { email: email },
+                success: function (data) {
+                    var userList = document.getElementById('userList');
+                    userList.innerHTML = '';
+                    data.forEach(function (user) {
+                        var listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+                        listItem.setAttribute('data-user-id', user.id);
+                        listItem.innerHTML =
+                            '<button type="button" class="btn btn-primary btn-sm select-button" onclick="selectUser(\'' + user.id + '\')">Select</button>' +
+                            '<span> ' + user.email + '</span>';
+                        userList.appendChild(listItem);
+                    });
+                }
+            });
+        }
+
+        function searchPackages() {
+            var name = document.getElementById('packageSearch').value;
+            $.ajax({
+                url: '@Url.Action("SearchPackages", "Admin")',
+                data: { name: name },
+                success: function (data) {
+                    var packageList = document.getElementById('packageList');
+                    packageList.innerHTML = '';
+                    data.forEach(function (package) {
+                        var listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+                        listItem.setAttribute('data-package-id', package.id);
+                        listItem.innerHTML =
+                            '<button type="button" class="btn btn-primary btn-sm select-button" onclick="selectPackage(\'' + package.id + '\')">Select</button>'+
+                            '<span> ' + package.name + ' - ' + package.monthValue + ' - ' + package.cameraValue + ' - ' + package.price + ' VND</span>' ;
+                        packageList.appendChild(listItem);
+                    });
+                }
+            });
+        }
+
+
+        function selectUser(userId) {
+            document.getElementById('selectedUserId').value = userId;
+            var userList = document.getElementById('userList').getElementsByTagName('li');
+            for (var i = 0; i < userList.length; i++) {
+                userList[i].classList.remove('active');
+                if (userList[i].getAttribute('data-user-id') === userId) {
+                    userList[i].classList.add('active');
+                }
+            }
+            enableAssignButton();
+        }
+
+        function selectPackage(packageId) {
+            document.getElementById('selectedPackageId').value = packageId;
+            var packageList = document.getElementById('packageList').getElementsByTagName('li');
+            for (var i = 0; i < packageList.length; i++) {
+                packageList[i].classList.remove('active');
+                if (packageList[i].getAttribute('data-package-id') === packageId) {
+                    packageList[i].classList.add('active');
+                }
+            }
+            enableAssignButton();
+        }
+
+        function enableAssignButton() {
+            var userId = document.getElementById('selectedUserId').value;
+            var packageId = document.getElementById('selectedPackageId').value;
+            var assignButton = document.getElementById('assignButton');
+            if (userId && packageId) {
+                assignButton.disabled = false;
+            } else {
+                assignButton.disabled = true;
+            }
+        }
+
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+        });
+    </script>
+}

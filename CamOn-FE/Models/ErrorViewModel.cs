@@ -16,5 +16,9 @@ namespace CamOn_FE.Models
         public string SelectedUserId { get; set; }
         public int SelectedPackageId { get; set; }
     }
+    public class AdminDashboardViewModel
+    {
+        public Dictionary<string, int> PackagesBoughtPerMonth { get; set; }
+    }
 
 }
